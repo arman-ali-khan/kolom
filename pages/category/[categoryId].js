@@ -3,7 +3,6 @@ import Layout from "../../layout/Layout";
 
 const categoryId = ({ data, loading,categoryId }) => {
     loading=false
-    console.log(categoryId)
     const blog = data?.posts
 
     // const category = JSON.parse(blog[0]?.categories)

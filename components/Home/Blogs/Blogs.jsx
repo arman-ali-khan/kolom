@@ -1,37 +1,28 @@
-import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { BsViewList } from 'react-icons/bs';
+import useSWR from "swr";
 import { UserContext } from "../../../context/ContextProvider";
 import Popular from "../../Popular/Popular";
+import PopularCard from "../../Popular/PopularCard";
 import Notifications from "../../User/Sidebar/Notifications";
 import UserAnalytics from "../../User/Sidebar/UserAnalytics";
 import Categories from "../Categories/Categories";
-import Blog from "./Blog";
+const fetcher = (...args) => fetch(...args).then((res) => res.json())
+
 
 const Blogs = () => {
   // get user
   const {user} = useContext(UserContext)
-  // posts get
-  const [getPosts, setGetPosts] = useState({});
-  // get post loading
-  const [loadingBlog,setLoadingBlog] = useState(true)
-  // pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  useEffect(() => {
-    setLoadingBlog(true)
-    axios.get(`${process.env.NEXT_PUBLIC_API_PRO}/api/posts?limit=10&page=${currentPage}`).then((res) => {
-      setGetPosts(res.data);
-      setLoadingBlog(false);
-    });
-  }, [currentPage]);
+    // pagination
+    const [currentPage, setCurrentPage] = useState(1);
+
+  const { data:getPosts, error } = useSWR(`${process.env.NEXT_PUBLIC_API_PRO}/api/posts?limit=10&page=${currentPage}`, fetcher)
+  if (error) return <div>Failed to load</div>
+  console.log(getPosts,'getPosts')
+
+  
   const posts = getPosts?.posts;
 
-  // loading
-  // const [loadingBlog,setLoadingBlog] = useState(false)
-  // useEffect(()=>{
-  //   setLoadingBlog(false)
-  // },[currentPage])
-  // count
   const count = Math.ceil((getPosts?.count || 10 )/ 10)
 
   return (
@@ -47,24 +38,24 @@ const Blogs = () => {
           <BsViewList />  <h2 className="text-base">Recent</h2>
           </div>
           <div className="space-y-0">
-            {loadingBlog ? (
-              <>
+            {!posts ? (
+              <div className="space-y-1">
               {/* <div className="fixed top-0 left-0 w-screen h-screen z-[999]  backdrop-blur-3xl">
               <Loader />
               </div> */}
                {
                 [...Array(10).keys()].map((item,i)=>{
                 return(  <div key={i}
-                  className="bg-base-200 w-full flex flex-row overflow-hidden md:h-32  sm:h-24  shadow-lg animate-pulse"
+                  className="bg-base-200 w-full flex flex-row overflow-hidden md:h-fit  sm:h-fit shadow-lg"
                 >
-                  <div className="block md:w-32 w-16 sm:w-24 border-2 bg-base-300 flex-none bg-cover md:h-auto h-16 sm:h-24 object-cover animate-pulse"></div>
+                  <div className="block md:w-44 mr-1 w-12 sm:w-24 rounded-none border-2 md:border-4 border-blue-400 flex-none bg-cover md:h-40 h-12 sm:h-24 object-fill skeleton"></div>
                   <div className="rounded-b lg:rounded-b-none lg:rounded-r md:p-4 p-1 flex flex-col justify-between leading-normal w-full"></div>
                 </div>)
                 })
                }
-              </>
+              </div>
             ) : (
-              posts?.map((post) => <Blog key={post.id} post={post} />)
+              posts?.map((post) => <PopularCard key={post.id} post={post} />)
             )}
 
             {/* pagination */}

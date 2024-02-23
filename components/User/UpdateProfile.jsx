@@ -78,6 +78,8 @@ const UpdateProfile = () => {
 
   // Uploading...
   const [uploadLoading, setUploadPhoto] = useState(false);
+  // image url
+  const [imgUrl,setImgUrl]=useState('')
 
   // photo upload error
   const [error, setError] = useState("");
@@ -99,7 +101,7 @@ const UpdateProfile = () => {
       .then((resp) => resp.json())
       .then((photoData) => {
         const photoUrl = photoData.secure_url;
-
+        setImgUrl(photoData.secure_url)
         axios
           .put(
             `${process.env.NEXT_PUBLIC_API_PRO}/api/users/${dbUser?.id}`,
@@ -115,7 +117,8 @@ const UpdateProfile = () => {
             setUploadPhoto(false);
             setError("");
             toast.success('Photo updated')
-            router.push(`/user/${dbUser.username}`);
+            
+            // router.push(`/user/${dbUser.username}`);
           })
           .catch((err) => {
             toast.error("Error While Uploading");
@@ -126,7 +129,7 @@ const UpdateProfile = () => {
         setError(err.message);
       });
   };
-
+const userImage = imgUrl?.length ?imgUrl:dbUser?.photo
   return (
     <div className="flex justify-center ">
       <div className="border">
@@ -135,6 +138,9 @@ const UpdateProfile = () => {
             <div className="w-full bg-base-300 px-4 py-2">
               <p className="text-xl text-center">Update Photo</p>
             </div>
+            <div className="flex justify-center">
+           <img className="w-14 h-14 p-1 rounded-full border border-orange-400" src={userImage} />
+           </div>
             <div className="flex flex-col">
               {/* Update photo */}
               <input
@@ -144,7 +150,7 @@ const UpdateProfile = () => {
               />
               {error ||
                 (uploadLoading && (
-                  <button className="my-2 py-2 inline-block">
+                  <button className="my-2 cursor-default py-2 inline-block">
                     {error
                       ? "Error While Uploading"
                       : uploadLoading

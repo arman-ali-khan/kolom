@@ -5,6 +5,7 @@ const moment = require('moment');
 import { useEffect, useState } from "react";
 import { BiBookContent } from "react-icons/bi";
 import { CiLink } from "react-icons/ci";
+import { FiAlertTriangle } from "react-icons/fi";
 function Hadith() {
   const likes = typeof window!=='undefined' && localStorage.getItem('likes')
   moment.locale('bn');
@@ -62,19 +63,8 @@ function Hadith() {
   const [showFull,setShowFull] = useState(false)
   return (
     <div className=" container mx-auto md:flex justify-between px-1 md:px-4">
-      <div className="flex w-full  flex-wrap flex-row justify-start">
-        {loadingBlog ? (
-          <div className="flex flex-col space-y-2">
-            <div className="py-2 h-12 min-w-44 w-full max-w-full flex rounded-md bg-base-300 skeleton"></div>
-            <div className="py-2 h-44 min-w-44 w-full max-w-full flex rounded-md bg-base-300 skeleton"></div>
-            <div className="py-2 h-14 border border-orange-400 rounded-full max-w-96 min-w-72 w-full bg-base-300 skeleton"></div>
-          </div>
-        ) : (
-          getPosts?.length &&
-          getPosts?.map((hadith, i) => {
-            return (
-              <div className=" w-full">
-                <div className="border-orange-500 bg-orange-400 w-full border-b my-2 md:px-4 py-1 flex items-center gap-2 text-white font-bold">
+      <div className="flex md:w-2/3 md:p-3 p-1 w-full flex-wrap flex-row justify-start">
+      <div className="border-orange-500 bg-orange-400 w-full border-b my-2 md:px-4 py-1 flex items-center gap-2 text-white font-bold">
                   <h2 className="flex text-base items-center gap-1 md:gap-2">
                     <span>
                       <BiBookContent size={20} />
@@ -82,6 +72,18 @@ function Hadith() {
                     Daily Hadith
                   </h2>
                 </div>
+        {loadingBlog ? (
+          <div className="flex flex-col space-y-2">
+            <div className="py-2 h-12 w-full max-w-full text-opacity-0 text-base-300 select-none flex rounded-md bg-base-300 skeleton">Elit irure nostrud dolore quis enim Lorem deserunt.Magna excepteur fugiat culpa fugiat.Minim velit id ad minim nostrud sit. Occaecat consectetur ad proident culpa pariatur </div>
+            <div className="py-2 h-44 w-full max-w-full text-opacity-0 text-base-300 select-none flex rounded-md bg-base-300 skeleton">Voluptate ad aliqua pariatur ut cillum id est reprehenderit aute incididunt.Esse mollit culpa ullamco pariatur mollit sint veniam voluptate.Incididunt esse nostrud officia esse est do laborum sint sunt sint non sunt laborum adipisicing. Irure pariatur minim quis sint ut ullamco. Reprehenderit pariatur labore et anim velit. Tempor culpa aute amet elit ad ex exercitation  sunt anim mollit labore ad enim.</div>
+            <div className="py-2 h-14 border border-orange-400 rounded-full max-w-96 min-w-72 w-full bg-base-300 skeleton"></div>
+          </div>
+        ) : (
+          getPosts?.length &&
+          getPosts?.map((hadith, i) => {
+            return (
+              <div className=" w-full">
+               
                
                 <div style={{overflow:showFull?'':'hidden',height:showFull?'auto':'176px'}} className="space-y-2 w-full">
                   {parse(hadith?.content)}
@@ -120,6 +122,17 @@ function Hadith() {
             );
           })
         )}
+      </div>
+      {/* ads */}
+      <div className="md:w-1/3 md:p-3 p-1 min-h-56 max-h-56 notice overflow-y-auto mt-2">
+      <div className="flex px-4 gap-2 py-1 items-center font-bold text-white bg-orange-400">
+          <span>
+            <FiAlertTriangle />
+          </span>
+          <p>Ads</p>
+        </div>
+        {/* Body */}
+        <div className=""></div>
       </div>
     </div>
   );

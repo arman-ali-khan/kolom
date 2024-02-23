@@ -56,7 +56,7 @@ function index() {
     <AdminLayout title={"Hadith"}>
       <div class="flex w-full min-w-96 max-w-full min-h-44">
         <div class="overflow-x-auto w-full">
-          <table class="min-w-full bg-white shadow-md rounded-xl">
+          <table class="min-w-full bg-base-100 shadow-md rounded-xl">
             <thead>
               <tr class="bg-blue-gray-100 text-gray-700">
                 <th class="py-3 px-4 max-w-14 overflow-hidden text-left ">

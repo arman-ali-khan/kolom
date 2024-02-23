@@ -366,7 +366,7 @@ const Settings = () => {
         <button className="btn w-full my-4 px-2 flex justify-center btn-sm">
           {subLoading ? "Updating..." : "Create"}
         </button>
-        <div className="bg-white">
+        <div className="bg-base-100">
           <div>
             <p className="py-1 font-bold text-white bg-orange-500 flex justify-center w-full">
               Notices
@@ -376,7 +376,7 @@ const Settings = () => {
             <ul>
               {notice?.map((not) => {
                 return (
-                  <li className={`list-decimal list-inside p-2 leading-5 ${not.type==='normal' && 'bg-white' || (not.type==='medium' && 'bg-teal-300') || (not.type==='hard' && 'bg-rose-300') }`}>
+                  <li className={`list-decimal list-inside p-2 leading-5 ${not.type==='normal' && 'bg-base-100' || (not.type==='medium' && 'bg-base-300') || (not.type==='hard' && 'bg-rose-300') }`}>
                     <span>{not?.notice} </span>
                     <span onClick={()=>handleDeleteNotice(not?.id)} className="rounded-full px-2 bg-error cursor-pointer text-white">X</span>
                   </li>

@@ -1,21 +1,15 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { GiFireBowl } from 'react-icons/gi';
+import useSWR from 'swr';
 import PopularCard from './PopularCard';
-const Popular = () => {
-    // loading
-    const [loading,setLoading] = useState(true)
 
-    // get popular data
-    const [popular,setPopular] = useState([])
-    // fetch data
-    useEffect(()=>{
-        axios.get(`${process.env.NEXT_PUBLIC_API_PRO}/api/popular`)
-        .then(res=>{
-            setPopular(res.data)
-            setLoading(false)
-        })
-    },[])
+const fetcher = (...args) => fetch(...args).then((res) => res.json())
+
+const Popular = () => {
+  const { data:popular, error } = useSWR(`${process.env.NEXT_PUBLIC_API_PRO}/api/popular`, fetcher)
+  if (error) return <div>Failed to load</div>
+
+ 
     return (
         <div className="md:flex justify-between w-full">
       <div className="flex w-full  flex-wrap flex-row justify-start">
@@ -24,7 +18,7 @@ const Popular = () => {
             <h2 className="flex text-base items-center gap-2"><span><GiFireBowl size={20} /></span> Popular</h2>
           </div>
           <div className="space-y-2 h-auto w-full">
-            {loading ? (
+            {!popular ? (
               <>
                {
                 [...Array(5).keys()].map((item,i)=>{
@@ -49,4 +43,6 @@ const Popular = () => {
     );
 };
 
+
 export default Popular;
+ 

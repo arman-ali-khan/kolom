@@ -30,7 +30,7 @@ const Navbar = () => {
                 width={200}
                 height={100}
                 alt=""
-                className=" w-full h-10 sm:h-12"
+                className=" w-full h-10 p-2 sm:h-12"
                 src={settings?.logo}
               />
             ) : (
