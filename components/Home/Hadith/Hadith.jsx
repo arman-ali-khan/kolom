@@ -1,64 +1,35 @@
-import axios from "axios";
 import parse from "html-react-parser";
 const moment = require('moment');
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BiBookContent } from "react-icons/bi";
 import { CiLink } from "react-icons/ci";
 import { FiAlertTriangle } from "react-icons/fi";
+
+const fetcher = (...args) => fetch(...args).then((res) => res.json())
+
+
+import useSWR from "swr";
 function Hadith() {
   const likes = typeof window!=='undefined' && localStorage.getItem('likes')
-  moment.locale('bn');
-  const [getPosts, setGetPosts] = useState({});
-  // get post loading
-  const [loadingBlog, setLoadingBlog] = useState(true);
-  const [count,setCount] = useState(null)
+
+
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
-  useEffect(() => {
-    setLoadingBlog(true);
-    axios
-      .get(`${process.env.NEXT_PUBLIC_API_PRO}/api/hadith?page=${currentPage}&limit=1`)
-      .then((res) => {
-        setGetPosts(res.data?.hadith);
-        setCount(res.data?.count)
-        setLoadingBlog(false);
-      });
-  }, [currentPage]);
-  
-  // const [local,setLocal] = useState(false) 
-  // useEffect(()=>{
-  //   setLocal(!local)
-  // },[local])
+ 
+  const { data:getPosts, error } = useSWR(`${process.env.NEXT_PUBLIC_API_PRO}/api/hadith?page=${currentPage}&limit=1`, fetcher)
+  if (error) return <div>Failed to load</div>
+ 
 
-     // handle get likes form local storage
-     const [added, setAdded] = useState(null);
-     
-
-  useEffect(() => {
-    const like = typeof window !== "undefined" && localStorage.getItem("like");
-    if (like === 'true') {
-      setAdded(true);
-    }else{
-      setAdded(false)
-    }
-    console.log(like,'like')
-  }, []);
+    // count
+    const count = getPosts?.count
+    // posts
+    const posts = getPosts?.hadith
 
     // const count = Math.ceil((getPosts?.count || 1 )/ 10)
 
 
-   
-  // handle like hadith
-  const handleLike = (id) => {
-   
-    console.log(id);
-    if(likes){
-      typeof window!=='undefined' && localStorage.setItem('likes',[...likes,id])
-    }else{
-      typeof window!=='undefined' && localStorage.setItem('likes',[id])
-    }
-  };
+
   
   const [showFull,setShowFull] = useState(false)
   return (
@@ -72,15 +43,15 @@ function Hadith() {
                     Daily Hadith
                   </h2>
                 </div>
-        {loadingBlog ? (
+        {!getPosts ? (
           <div className="flex flex-col space-y-2">
             <div className="py-2 h-12 w-full max-w-full text-opacity-0 text-base-300 select-none flex rounded-md bg-base-300 skeleton">Elit irure nostrud dolore quis enim Lorem deserunt.Magna excepteur fugiat culpa fugiat.Minim velit id ad minim nostrud sit. Occaecat consectetur ad proident culpa pariatur </div>
             <div className="py-2 h-44 w-full max-w-full text-opacity-0 text-base-300 select-none flex rounded-md bg-base-300 skeleton">Voluptate ad aliqua pariatur ut cillum id est reprehenderit aute incididunt.Esse mollit culpa ullamco pariatur mollit sint veniam voluptate.Incididunt esse nostrud officia esse est do laborum sint sunt sint non sunt laborum adipisicing. Irure pariatur minim quis sint ut ullamco. Reprehenderit pariatur labore et anim velit. Tempor culpa aute amet elit ad ex exercitation  sunt anim mollit labore ad enim.</div>
             <div className="py-2 h-14 border border-orange-400 rounded-full max-w-96 min-w-72 w-full bg-base-300 skeleton"></div>
           </div>
         ) : (
-          getPosts?.length &&
-          getPosts?.map((hadith, i) => {
+          posts?.length &&
+          posts?.map((hadith, i) => {
             return (
               <div className=" w-full">
                

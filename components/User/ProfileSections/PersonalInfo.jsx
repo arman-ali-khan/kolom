@@ -1,4 +1,3 @@
-import Statistics from "./Statistics";
 
 function PersonalInfo({user}) {
     return (
@@ -47,7 +46,7 @@ function PersonalInfo({user}) {
           </div>
        
           {/* Activity log */}
-        <Statistics />
+        {/* <Statistics /> */}
         </div>
         {/* Other sections */}
       </div>

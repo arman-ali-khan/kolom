@@ -64,7 +64,7 @@ const User = ({ dbUser }) => {
   return (
     <div>
   
-      {/* Porfile */}
+      {/* Profile */}
       <ProfileSection dbUser={dbUser} user={user} posts={posts} />
     </div>
   );
