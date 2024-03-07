@@ -18,7 +18,6 @@ const Blogs = () => {
 
   const { data:getPosts, error } = useSWR(`${process.env.NEXT_PUBLIC_API_PRO}/api/posts?limit=10&page=${currentPage}`, fetcher)
   if (error) return <div>Failed to load</div>
-  console.log(getPosts,'getPosts')
 
   
   const posts = getPosts?.posts;
