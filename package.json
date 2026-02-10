@@ -16,7 +16,7 @@
     "@vercel/speed-insights": "^1.0.10",
     "auth0-js": "^9.24.1",
     "autoprefixer": "10.4.17",
-    "axios": "^1.6.7",
+    "axios": "^1.13.5",
     "cors": "^2.8.5",
     "daisyui": "^4.7.2",
     "dotenv": "^16.4.4",
